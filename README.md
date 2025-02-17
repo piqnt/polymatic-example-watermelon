@@ -1,4 +1,4 @@
-# Polymatic Tutorial - Watermelon Gme
+# Polymatic Tutorial - Watermelon Game
 
 In this tutorial we will recreate the Watermelon game. We use the [Polymatic](https://github.com/piqnt/polymatic) framework, SVG, and [Planck/Box2D](https://github.com/piqnt/planck) physics engine.
 
