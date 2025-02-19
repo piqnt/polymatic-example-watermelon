@@ -1,4 +1,4 @@
-# Polymatic Tutorial - Watermelon Game
+# Watermelon Game - Polymatic Example
 
 This is a demo implementation of the Watermelon game using [Polymatic](https://github.com/piqnt/polymatic) framework, SVG, and [Planck/Box2D](https://github.com/piqnt/planck) physics engine.
 
