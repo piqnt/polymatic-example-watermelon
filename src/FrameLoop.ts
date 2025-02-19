@@ -5,6 +5,9 @@ export interface FrameLoopEvent {
   now: number;
 }
 
+/**
+ * Implements variable length game loop. Sends frame-loop event to all middlewares.
+ */
 export class FrameLoop extends Middleware {
   lastTime = 0;
 

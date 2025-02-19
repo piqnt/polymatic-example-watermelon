@@ -5,6 +5,10 @@ import { Fruit, Scorecard } from "./Data";
 
 const MAX_LEVEL = 11;
 
+/**
+ * Implements gameplay, manges game objects such as fruits and score.
+ * Receives user interaction events from Terminal, and collision events from Physics.
+ */
 export class Gameplay extends Middleware<MainContext> {
   constructor() {
     super();

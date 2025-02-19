@@ -6,6 +6,10 @@ import { MainContext } from "./Main";
 import { Fruit, Bucket } from "./Data";
 import { FrameLoopEvent } from "./FrameLoop";
 
+/**
+ * Adds physics simulation to fruits and bucket using data-driver, and updates fruits position.
+ * This also collects collision events from simulation, and sends event to other middleware.
+ */
 export class Physics extends Middleware<MainContext> {
   world: World;
   time: number = 0;

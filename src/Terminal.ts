@@ -5,6 +5,10 @@ import { Fruit, Bucket, Scorecard } from "./Data";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
+/**
+ * Implements user-interface of the game.
+ * Uses data-driver to render fruits and score with SVG, and collects user pointer inputs and sends events to other middlewares.
+ */
 export class Terminal extends Middleware<MainContext> {
   svg: SVGSVGElement | null;
 
