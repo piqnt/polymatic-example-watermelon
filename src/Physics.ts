@@ -7,7 +7,7 @@
 
 import { World, CircleShape, EdgeShape, Body, Contact, ChainShape } from "planck";
 
-import { Dataset, Driver, Middleware } from "polymatic";
+import { Binder, Driver, Middleware } from "polymatic";
 
 import { MainContext } from "./Main";
 import { Fruit, Bucket } from "./Data";
@@ -38,7 +38,7 @@ export class Physics extends Middleware<MainContext> {
   }
 
   handleFrameUpdate(ev: FrameLoopEvent) {
-    this.dataset.data([...this.context.fruits, this.context.bucket]);
+    this.binder.data([...this.context.fruits, this.context.bucket]);
     this.time += ev.dt;
     while (this.time >= this.timeStep) {
       this.time -= this.timeStep;
@@ -108,7 +108,7 @@ export class Physics extends Middleware<MainContext> {
     },
   });
 
-  dataset = Dataset.create<Fruit | Bucket>({
+  binder = Binder.create<Fruit | Bucket>({
     key: (data) => data.key,
     drivers: [this.fruitDriver, this.bucketDriver],
   });

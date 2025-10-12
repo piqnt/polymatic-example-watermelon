@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Dataset, Driver, Middleware } from "polymatic";
+import { Binder, Driver, Middleware } from "polymatic";
 
 import { MainContext } from "./Main";
 import { Fruit, Bucket, Scorecard } from "./Data";
@@ -95,7 +95,7 @@ export class Terminal extends Middleware<MainContext> {
   };
 
   handleFrameRender = () => {
-    this.dataset.data([this.context.scorecard, ...this.context.fruits, this.context.next, this.context.bucket]);
+    this.binder.data([this.context.scorecard, ...this.context.fruits, this.context.next, this.context.bucket]);
   };
 
   fruitsDriver = Driver.create<Fruit, Element>({
@@ -165,7 +165,7 @@ export class Terminal extends Middleware<MainContext> {
     },
   });
 
-  dataset = Dataset.create<Fruit | Bucket | Scorecard>({
+  binder = Binder.create<Fruit | Bucket | Scorecard>({
     key: (data) => data.key,
     drivers: [this.fruitsDriver, this.bucketDriver, this.scorecardDriver],
   });
