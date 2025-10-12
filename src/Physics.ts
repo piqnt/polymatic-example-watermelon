@@ -25,7 +25,7 @@ export class Physics extends Middleware<MainContext> {
   constructor() {
     super();
     this.on("activate", this.handleActivate);
-    this.on("frame-loop", this.handleFrameLoop);
+    this.on("frame-update", this.handleFrameUpdate);
   }
 
   handleActivate() {
@@ -37,7 +37,7 @@ export class Physics extends Middleware<MainContext> {
     this.world.on("pre-solve", this.handleCollide);
   }
 
-  handleFrameLoop(ev: FrameLoopEvent) {
+  handleFrameUpdate(ev: FrameLoopEvent) {
     this.dataset.data([...this.context.fruits, this.context.bucket]);
     this.time += ev.dt;
     while (this.time >= this.timeStep) {

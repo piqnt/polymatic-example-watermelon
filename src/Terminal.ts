@@ -27,7 +27,7 @@ export class Terminal extends Middleware<MainContext> {
     super();
     this.on("activate", this.handleActivate);
     this.on("deactivate", this.handleDeactivate);
-    this.on("frame-loop", this.handleFrameLoop);
+    this.on("frame-render", this.handleFrameRender);
     this.on("main-start", this.handleStart);
 
     this.dataset.addDriver(this.fruitsDriver);
@@ -98,7 +98,7 @@ export class Terminal extends Middleware<MainContext> {
     this.emit("drop-next-fruit", point);
   };
 
-  handleFrameLoop = (dt: number) => {
+  handleFrameRender = () => {
     this.dataset.data([this.context.scorecard, ...this.context.fruits, this.context.next, this.context.bucket]);
   };
 
