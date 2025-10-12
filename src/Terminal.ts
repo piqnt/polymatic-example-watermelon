@@ -30,10 +30,6 @@ export class Terminal extends Middleware<MainContext> {
     this.on("frame-render", this.handleFrameRender);
     this.on("main-start", this.handleStart);
 
-    this.dataset.addDriver(this.fruitsDriver);
-    this.dataset.addDriver(this.bucketDriver);
-    this.dataset.addDriver(this.scorecardDriver);
-
     this.scorecardGroup = document.createElementNS(SVG_NS, "g");
     this.fruitsGroup = document.createElementNS(SVG_NS, "g");
     this.bucketGroup = document.createElementNS(SVG_NS, "g");
@@ -171,5 +167,6 @@ export class Terminal extends Middleware<MainContext> {
 
   dataset = Dataset.create<Fruit | Bucket | Scorecard>({
     key: (data) => data.key,
+    drivers: [this.fruitsDriver, this.bucketDriver, this.scorecardDriver],
   });
 }

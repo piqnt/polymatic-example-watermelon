@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "planck": "^1.3.0",
-    "polymatic": "^0.0.5"
+    "polymatic": "^0.0.10"
   }
 }

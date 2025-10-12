@@ -110,9 +110,8 @@ export class Physics extends Middleware<MainContext> {
 
   dataset = Dataset.create<Fruit | Bucket>({
     key: (data) => data.key,
-  })
-    .addDriver(this.fruitDriver)
-    .addDriver(this.bucketDriver);
+    drivers: [this.fruitDriver, this.bucketDriver],
+  });
 
   handleCollide = (contact: Contact) => {
     const fixtureA = contact.getFixtureA();
