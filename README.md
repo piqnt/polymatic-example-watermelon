@@ -1,6 +1,10 @@
 # Watermelon Game - Polymatic Example
 
-This is a demo implementation of the Watermelon game using [Polymatic](https://github.com/piqnt/polymatic) framework, SVG, and [Planck/Box2D](https://github.com/piqnt/planck) physics engine.
+This is a demo implementation of the Watermelon game using:
+- [Polymatic](https://github.com/piqnt/polymatic) framework
+- SVG for rendering
+- [Planck/Box2D](https://github.com/piqnt/planck) physics engine
+- [Preact](https://preactjs.com/) and [Preact Signals](https://github.com/preactjs/signals)
 
 [Play Live Demo](https://piqnt.github.io/polymatic-example-watermelon/)
 

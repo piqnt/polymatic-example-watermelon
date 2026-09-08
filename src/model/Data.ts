@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
 export class Scorecard {
   key = "scorecard-" + Math.random();
   type = "scorecard" as const;

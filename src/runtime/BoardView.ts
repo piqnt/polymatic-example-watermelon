@@ -7,19 +7,19 @@
 
 import { Binder, Driver, Middleware } from "polymatic";
 
-import { MainContext } from "./Main";
-import { Fruit, Bucket, Scorecard } from "./Data";
+import { type MainContext, type Fruit, type Bucket } from "../model";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 /**
- * Implements user-interface of the game.
- * Uses data-driver to render fruits and score with SVG, and collects user pointer inputs and sends events to other middlewares.
+ * The board: the bucket and the fruits, drawn into the page's svg with a
+ * data-driver, plus the pointer input that aims and drops the next fruit. The
+ * score and the game-over card are the Preact hud now (shell/), fed by
+ * runtime/HudManager.
  */
-export class Terminal extends Middleware<MainContext> {
+export class BoardView extends Middleware<MainContext> {
   svg: SVGSVGElement | null;
 
-  scorecardGroup: SVGGElement;
   fruitsGroup: SVGGElement;
   bucketGroup: SVGGElement;
 
@@ -30,7 +30,6 @@ export class Terminal extends Middleware<MainContext> {
     this.on("frame-render", this.handleFrameRender);
     this.on("main-start", this.handleStart);
 
-    this.scorecardGroup = document.createElementNS(SVG_NS, "g");
     this.fruitsGroup = document.createElementNS(SVG_NS, "g");
     this.bucketGroup = document.createElementNS(SVG_NS, "g");
   }
@@ -45,7 +44,6 @@ export class Terminal extends Middleware<MainContext> {
 
       this.svg.appendChild(this.bucketGroup);
       this.svg.appendChild(this.fruitsGroup);
-      this.svg.appendChild(this.scorecardGroup);
     } else {
       this.svg = null;
       console.error("Container SVG element not found");
@@ -95,7 +93,7 @@ export class Terminal extends Middleware<MainContext> {
   };
 
   handleFrameRender = () => {
-    this.binder.data([this.context.scorecard, ...this.context.fruits, this.context.next, this.context.bucket]);
+    this.binder.data([...this.context.fruits, this.context.next, this.context.bucket]);
   };
 
   fruitsDriver = Driver.create<Fruit, Element>({
@@ -143,30 +141,8 @@ export class Terminal extends Middleware<MainContext> {
     },
   });
 
-  scorecardDriver = Driver.create<Scorecard, SVGTextElement>({
-    filter: (data) => {
-      return data.type === "scorecard";
-    },
-    enter: (data) => {
-      const element = document.createElementNS(SVG_NS, "text");
-      element.classList.add("score");
-      this.scorecardGroup.appendChild(element);
-      return element;
-    },
-    update: (data, element) => {
-      element.setAttribute("x", String(-this.context.bucket.width / 2 + 0.5));
-      element.setAttribute("y", String(-this.context.bucket.height / 2 - 1));
-      if (element.textContent !== String(data.score)) {
-        element.textContent = String(data.score);
-      }
-    },
-    exit: (data, text) => {
-      text.remove();
-    },
-  });
-
-  binder = Binder.create<Fruit | Bucket | Scorecard>({
+  binder = Binder.create<Fruit | Bucket>({
     key: (data) => data.key,
-    drivers: [this.fruitsDriver, this.bucketDriver, this.scorecardDriver],
+    drivers: [this.fruitsDriver, this.bucketDriver],
   });
 }

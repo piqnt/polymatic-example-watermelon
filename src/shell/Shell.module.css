@@ -1,0 +1,114 @@
+/* The board is an svg with viewBox "-7 -12 14 23", scaled to fit the window and
+   centred (the default preserveAspectRatio). The hud has to sit on that same
+   box, so the frame below reproduces it and `--u` is one world unit. Every
+   offset here is in the world coordinates the svg is drawn in, measured from
+   the viewBox origin at (-7, -12). */
+
+.frame {
+  --u: min(100vw / 14, 100vh / 23);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--u) * 14);
+  height: calc(var(--u) * 23);
+  pointer-events: none;
+  font-family: var(--watermelon-font);
+}
+
+/* where the svg <text> used to sit: half a unit inside the bucket's left edge,
+   one unit above its rim */
+.score {
+  position: absolute;
+  left: calc(var(--u) * 1.5);
+  top: calc(var(--u) * 1);
+  transform: translateY(-50%);
+  font-size: calc(var(--u) * 1.5);
+  font-weight: 600;
+  line-height: 1;
+  color: #d7d1cb;
+  -webkit-text-stroke: calc(var(--u) * 0.07) #514940;
+}
+
+/* mirrors the score onto the bucket's other shoulder, in the same ink */
+.reset {
+  position: absolute;
+  right: calc(var(--u) * 1.5);
+  top: calc(var(--u) * 1);
+  transform: translateY(-50%);
+  display: flex;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #d7d1cb;
+  font-size: calc(var(--u) * 1.5);
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* The score's dark edge comes from -webkit-text-stroke, which does nothing for
+   an icon, so hard drop shadows outline it instead. They are half the score's
+   width on purpose: a text stroke straddles the glyph edge, so only half of it
+   shows on the outside, while a drop shadow sits entirely outside. */
+.reset svg {
+  filter: drop-shadow(calc(var(--u) * 0.035) 0 0 #514940) drop-shadow(calc(var(--u) * -0.035) 0 0 #514940)
+    drop-shadow(0 calc(var(--u) * 0.035) 0 #514940) drop-shadow(0 calc(var(--u) * -0.035) 0 #514940);
+}
+
+.reset:hover {
+  color: #f0ebe5;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(38, 34, 30, 0.55);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 0.45);
+  padding: calc(var(--u) * 1) calc(var(--u) * 1.5);
+  border-radius: calc(var(--u) * 0.6);
+  background: #d5d5d5;
+  color: #514940;
+  box-shadow: 0 calc(var(--u) * 0.2) calc(var(--u) * 0.7) rgba(0, 0, 0, 0.35);
+}
+
+.cardTitle {
+  font-size: calc(var(--u) * 0.9);
+  line-height: 1;
+}
+
+.cardScore {
+  font-size: calc(var(--u) * 2.2);
+  line-height: 1;
+}
+
+.again {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 0.3);
+  margin-top: calc(var(--u) * 0.4);
+  padding: calc(var(--u) * 0.45) calc(var(--u) * 0.9);
+  border: none;
+  border-radius: calc(var(--u) * 0.45);
+  background: #ff7068;
+  color: #fff;
+  font-family: inherit;
+  font-size: calc(var(--u) * 0.8);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.again:hover {
+  filter: brightness(1.06);
+}

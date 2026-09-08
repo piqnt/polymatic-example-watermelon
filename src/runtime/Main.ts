@@ -7,32 +7,36 @@
 
 import { Middleware } from "polymatic";
 
-import { Fruit, Bucket, Scorecard } from "./Data";
+import { type MainContext } from "../model";
 import { Gameplay } from "./Gameplay";
-import { Terminal } from "./Terminal";
+import { BoardView } from "./BoardView";
 import { Physics } from "./Physics";
 import { FrameLoop } from "./FrameLoop";
+import { HudManager } from "./HudManager";
 
-export class MainContext {
-  scorecard: Scorecard | null;
-
-  next: Fruit | null = null;
-  fruits: Fruit[] = [];
-  bucket = new Bucket(12, 20);
-}
-
+/**
+ * The runtime. It owns the bucket, the fruits and the physics; the score and
+ * the game-over card are the shell's (see shell/App), and the two meet at the
+ * signals on MainContext.
+ */
 export class Main extends Middleware<MainContext> {
   constructor() {
     super();
     this.use(new FrameLoop());
     this.use(new Gameplay());
     this.use(new Physics());
-    this.use(new Terminal());
+    this.use(new BoardView());
+    this.use(new HudManager());
 
     this.on("activate", this.handleActivate);
+    this.on("main-start", this.handleStart);
   }
 
-  handleActivate() {
+  handleActivate = () => {
     setTimeout(() => this.emit("main-start"), 100);
-  }
+  };
+
+  handleStart = () => {
+    this.context.ready.value = true;
+  };
 }

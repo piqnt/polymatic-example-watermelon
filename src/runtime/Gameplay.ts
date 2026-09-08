@@ -7,8 +7,8 @@
 
 import { Middleware } from "polymatic";
 
-import { MainContext } from "./Main";
-import { Fruit, Scorecard } from "./Data";
+import { MainContext } from "../model";
+import { Fruit, Scorecard } from "../model";
 
 const MAX_LEVEL = 11;
 
@@ -29,6 +29,10 @@ export class Gameplay extends Middleware<MainContext> {
   }
 
   handleStart() {
+    // a round always begins on an empty bucket. Topping out already clears it,
+    // but starting over mid-game has to do it here.
+    this.context.fruits = [];
+    this.context.next = null;
     this.context.scorecard = new Scorecard();
     this.context.scorecard.gameState = "game-play";
     this.createNextFruit();

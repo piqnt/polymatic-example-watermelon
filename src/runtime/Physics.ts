@@ -9,8 +9,8 @@ import { World, CircleShape, EdgeShape, Body, Contact, ChainShape } from "planck
 
 import { Binder, Driver, Middleware } from "polymatic";
 
-import { MainContext } from "./Main";
-import { Fruit, Bucket } from "./Data";
+import { MainContext } from "../model";
+import { Fruit, Bucket } from "../model";
 import { FrameLoopEvent } from "./FrameLoop";
 
 /**
@@ -96,7 +96,7 @@ export class Physics extends Middleware<MainContext> {
             { x: +halfWidth, y: +halfHeight },
             { x: -halfWidth, y: +halfHeight },
           ],
-          true
+          true,
         ),
       });
 
