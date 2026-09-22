@@ -6,6 +6,9 @@
  */
 
 import { type Signal, signal } from "@preact/signals";
+import { type Application, type Container } from "pixi.js";
+
+import { type Textures } from "../runtime/PixiManager";
 
 import { Bucket, type Fruit, type Scorecard } from "./Data";
 import { HudData } from "./Hud";
@@ -21,11 +24,16 @@ import { HudData } from "./Hud";
  * changes no displayed number re-renders nothing.
  */
 export class MainContext {
+  // the pixi application and the scene container, set by runtime/PixiManager
+  pixi?: Application;
+  scene?: Container;
+  textures?: Textures;
+
   scorecard: Scorecard | null = null;
 
   next: Fruit | null = null;
   fruits: Fruit[] = [];
-  bucket = new Bucket(12, 20);
+  bucket = new Bucket(11, 18, 1.25);
 
   // --- shell facing state ---
 

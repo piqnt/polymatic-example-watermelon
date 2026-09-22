@@ -1,46 +1,52 @@
-/* The board is an svg with viewBox "-7 -12 14 23", scaled to fit the window and
-   centred (the default preserveAspectRatio). The hud has to sit on that same
-   box, so the frame below reproduces it and `--u` is one world unit. Every
-   offset here is in the world coordinates the svg is drawn in, measured from
-   the viewBox origin at (-7, -12). */
+/* The board is drawn by runtime/BoardView in a 16x23 unit box (x from -8 to 8,
+   y from -12 to 11), scaled to fit the window and centred. The hud has to sit
+   on that same box, so the frame below reproduces it and `--u` is one world
+   unit. Every offset here is in the world coordinates the board is drawn in,
+   measured from the box origin at (-8, -12). */
 
 .frame {
-  --u: min(100vw / 14, 100vh / 23);
+  --u: min(100vw / 16, 100vh / 23);
+  /* the cellar palette: walnut ink, old parchment, aged brass */
+  --ink: #3a2714;
+  --cream: #f1e3c3;
+  --brass: #c08a2b;
+  --brass-light: #e2b559;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: calc(var(--u) * 14);
+  width: calc(var(--u) * 16);
   height: calc(var(--u) * 23);
   pointer-events: none;
   font-family: var(--watermelon-font);
 }
 
-/* where the svg <text> used to sit: half a unit inside the bucket's left edge,
-   one unit above its rim */
+/* half a unit inside the barrel's opening on the left (the opening is 11 units
+   wide, so its edge is 2.5 units in from the box edge), one unit above its rim */
 .score {
   position: absolute;
-  left: calc(var(--u) * 1.5);
-  top: calc(var(--u) * 1);
+  left: calc(var(--u) * 3);
+  top: calc(var(--u) * 1.5);
   transform: translateY(-50%);
   font-size: calc(var(--u) * 1.5);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
-  color: #d7d1cb;
-  -webkit-text-stroke: calc(var(--u) * 0.07) #514940;
+  color: var(--cream);
+  -webkit-text-stroke: calc(var(--u) * 0.07) var(--ink);
+  text-shadow: 0 calc(var(--u) * 0.08) calc(var(--u) * 0.2) rgba(0, 0, 0, 0.6);
 }
 
-/* mirrors the score onto the bucket's other shoulder, in the same ink */
+/* mirrors the score onto the barrel's other shoulder, in the same ink */
 .reset {
   position: absolute;
-  right: calc(var(--u) * 1.5);
-  top: calc(var(--u) * 1);
+  right: calc(var(--u) * 3);
+  top: calc(var(--u) * 1.5);
   transform: translateY(-50%);
   display: flex;
   padding: 0;
   border: none;
   background: none;
-  color: #d7d1cb;
+  color: var(--cream);
   font-size: calc(var(--u) * 1.5);
   line-height: 1;
   cursor: pointer;
@@ -52,63 +58,117 @@
    width on purpose: a text stroke straddles the glyph edge, so only half of it
    shows on the outside, while a drop shadow sits entirely outside. */
 .reset svg {
-  filter: drop-shadow(calc(var(--u) * 0.035) 0 0 #514940) drop-shadow(calc(var(--u) * -0.035) 0 0 #514940)
-    drop-shadow(0 calc(var(--u) * 0.035) 0 #514940) drop-shadow(0 calc(var(--u) * -0.035) 0 #514940);
+  filter: drop-shadow(calc(var(--u) * 0.035) 0 0 var(--ink)) drop-shadow(calc(var(--u) * -0.035) 0 0 var(--ink))
+    drop-shadow(0 calc(var(--u) * 0.035) 0 var(--ink)) drop-shadow(0 calc(var(--u) * -0.035) 0 var(--ink));
 }
 
 .reset:hover {
-  color: #f0ebe5;
+  color: var(--brass-light);
 }
 
+/* the whole cellar goes dark and warm behind the card. The frame this sits in
+   is only the board's box, and its transform makes it the containing block even
+   for fixed positioning, so the backdrop reaches out past it on every side
+   instead; the board clips it to the window. */
 .backdrop {
   position: absolute;
-  inset: 0;
+  inset: -100vmax;
   pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(38, 34, 30, 0.55);
+  background: radial-gradient(ellipse at center, rgba(60, 40, 20, 0.45), rgba(12, 8, 4, 0.8));
 }
 
+/* the game-over card is a parchment label, like the one on a bottle: aged
+   paper, a double rule around the edge, and a brass button */
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(var(--u) * 0.45);
-  padding: calc(var(--u) * 1) calc(var(--u) * 1.5);
-  border-radius: calc(var(--u) * 0.6);
-  background: #d5d5d5;
-  color: #514940;
-  box-shadow: 0 calc(var(--u) * 0.2) calc(var(--u) * 0.7) rgba(0, 0, 0, 0.35);
+  gap: calc(var(--u) * 0.4);
+  padding: calc(var(--u) * 1.1) calc(var(--u) * 1.8);
+  border: calc(var(--u) * 0.08) solid var(--ink);
+  border-radius: calc(var(--u) * 0.25);
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 250, 230, 0.55), transparent 60%),
+    linear-gradient(170deg, #efe1bf, #d9c395);
+  color: var(--ink);
+  box-shadow:
+    inset 0 0 calc(var(--u) * 0.8) rgba(120, 80, 30, 0.35),
+    0 calc(var(--u) * 0.3) calc(var(--u) * 0.9) rgba(0, 0, 0, 0.6);
+}
+
+/* the inner rule of the label */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--u) * 0.22);
+  border: calc(var(--u) * 0.035) solid var(--ink);
+  border-radius: calc(var(--u) * 0.15);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .cardTitle {
-  font-size: calc(var(--u) * 0.9);
+  font-size: calc(var(--u) * 0.8);
   line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.85;
+}
+
+/* short rules on both sides of the title, like a label's ornaments */
+.cardTitle::before,
+.cardTitle::after {
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(var(--u) * 0.9);
+  height: calc(var(--u) * 0.035);
+  margin: 0 calc(var(--u) * 0.35);
+  background: var(--ink);
+  opacity: 0.6;
 }
 
 .cardScore {
-  font-size: calc(var(--u) * 2.2);
+  font-size: calc(var(--u) * 2.4);
+  font-weight: 700;
   line-height: 1;
+  color: var(--ink);
 }
 
+/* a brass plate of a button */
 .again {
   display: flex;
   align-items: center;
   gap: calc(var(--u) * 0.3);
   margin-top: calc(var(--u) * 0.4);
-  padding: calc(var(--u) * 0.45) calc(var(--u) * 0.9);
-  border: none;
-  border-radius: calc(var(--u) * 0.45);
-  background: #ff7068;
-  color: #fff;
+  padding: calc(var(--u) * 0.45) calc(var(--u) * 1);
+  border: calc(var(--u) * 0.06) solid #6f4d16;
+  border-radius: calc(var(--u) * 0.2);
+  background: linear-gradient(180deg, var(--brass-light), var(--brass));
+  color: var(--ink);
   font-family: inherit;
-  font-size: calc(var(--u) * 0.8);
+  font-weight: 700;
+  font-size: calc(var(--u) * 0.75);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
+  box-shadow:
+    inset 0 calc(var(--u) * 0.05) 0 rgba(255, 240, 200, 0.6),
+    0 calc(var(--u) * 0.1) calc(var(--u) * 0.25) rgba(0, 0, 0, 0.45);
 }
 
 .again:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.08);
+}
+
+.again:active {
+  transform: translateY(calc(var(--u) * 0.03));
+  box-shadow: inset 0 calc(var(--u) * 0.05) 0 rgba(255, 240, 200, 0.3);
 }

@@ -2,7 +2,7 @@
 
 This is a demo implementation of the Watermelon game using:
 - [Polymatic](https://github.com/piqnt/polymatic) framework
-- SVG for rendering
+- [Pixi.js](https://pixijs.com/) for rendering
 - [Planck/Box2D](https://github.com/piqnt/planck) physics engine
 - [Preact](https://preactjs.com/) and [Preact Signals](https://github.com/preactjs/signals)
 

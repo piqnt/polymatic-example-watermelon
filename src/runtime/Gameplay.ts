@@ -95,12 +95,11 @@ export class Gameplay extends Middleware<MainContext> {
   }
 
   setInitFruitPosition(fruit: Fruit, p: { x: number; y: number }) {
-    const halfWidth = this.context.bucket.width / 2;
     const halfHeight = this.context.bucket.height / 2;
-    const xMax = halfWidth - fruit.radius;
+    const y = -(halfHeight - 2);
+    const xMax = this.context.bucket.halfWidthAt(y) - fruit.radius;
     const xMin = -xMax;
     const x = Math.min(xMax, Math.max(xMin, p.x));
-    const y = -(halfHeight - 2);
     fruit.position.x = x;
     fruit.position.y = y;
   }

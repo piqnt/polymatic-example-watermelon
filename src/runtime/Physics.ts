@@ -67,6 +67,7 @@ export class Physics extends Middleware<MainContext> {
       const { x, y } = body.getPosition();
       data.position.x = x;
       data.position.y = y;
+      data.angle = body.getAngle();
     },
     exit: (data, body) => {
       this.world.destroyBody(body);
@@ -88,16 +89,11 @@ export class Physics extends Middleware<MainContext> {
         userData: "top",
       });
 
+      // the barrel outline: right side from top to bottom, then the left side mirrored from bottom to top
+      const right = data.profile();
+      const left = right.map((p) => ({ x: -p.x, y: p.y })).reverse();
       body.createFixture({
-        shape: new ChainShape(
-          [
-            { x: -halfWidth, y: -halfHeight },
-            { x: +halfWidth, y: -halfHeight },
-            { x: +halfWidth, y: +halfHeight },
-            { x: -halfWidth, y: +halfHeight },
-          ],
-          true,
-        ),
+        shape: new ChainShape([...right, ...left], true),
       });
 
       return body;

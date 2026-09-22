@@ -12,6 +12,7 @@ import { Gameplay } from "./Gameplay";
 import { BoardView } from "./BoardView";
 import { Physics } from "./Physics";
 import { FrameLoop } from "./FrameLoop";
+import { PixiManager } from "./PixiManager";
 import { HudManager } from "./HudManager";
 
 /**
@@ -23,6 +24,7 @@ export class Main extends Middleware<MainContext> {
   constructor() {
     super();
     this.use(new FrameLoop());
+    this.use(new PixiManager());
     this.use(new Gameplay());
     this.use(new Physics());
     this.use(new BoardView());

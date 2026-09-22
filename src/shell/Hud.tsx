@@ -39,7 +39,7 @@ function ResetButton() {
   const runtime = useRuntime();
   return (
     <button type="button" class={styles.reset} aria-label="Start over" onClick={() => restart(runtime)}>
-      <TbRefresh aria-hidden size="1em" />
+      <TbRefresh aria-hidden size="0.9em" />
     </button>
   );
 }

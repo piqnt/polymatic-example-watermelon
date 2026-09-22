@@ -49,6 +49,7 @@ export class FrameLoop extends Middleware {
 
     this.emit("frame-update", this.event);
     this.emit("frame-render", this.event);
+    this.emit("frame-after", this.event);
 
     this.requestFrame();
   };
